@@ -16,7 +16,7 @@ Format was a zipped tab-separated flat file (.tsv)
 	5310672 rows transferred 
 
 After discovering omissions in the Kaggle dataset above, I subsequently imported a newer, 
-more complete file directly from Redfin (data courtesy of Redfin, a national real estate brokerage).
+more complete file directly from Redfin.
 https://www.redfin.com/news/data-center/
 https://redfin-public-data.s3.us-west-2.amazonaws.com/redfin_market_tracker/zip_code_market_tracker.tsv000.gz
 Format was a zipped tab-seperated flat file (.tsv000.gz)
@@ -214,7 +214,7 @@ SELECT [region],[property_type],[period_end], COUNT(*)
   HAVING COUNT(*) > 1
 -- No dups!
 
---7) Cleaning bad data, converting data types-------------------------------------------------------------------
+--6) Cleaning bad data, converting data types-------------------------------------------------------------------
 
 -- Preview removing excess text from 'region'
 SELECT [region],
@@ -929,34 +929,7 @@ UPDATE [HousingDataProject_Cnty].[dbo].[FixedUS]
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+-- BREAK
 
 
 
@@ -1079,7 +1052,7 @@ SET [period_end_C] = CONVERT(date,[period_end]),
       [parent_metro_region_metro_code] IS NULL
 -- good, no nulls 0:05
 
---8) Checking stats of [median_sale_price_C], [median_list_price_C]----------------------------------------------
+--7) Checking stats of [median_sale_price_C], [median_list_price_C]----------------------------------------------
 
 SELECT [property_type], 
       MIN(CAST([median_sale_price_C] AS bigint)) AS MinMedSalePrice,
@@ -1187,7 +1160,7 @@ an aggregate function or the GROUP BY clause." Must CAST AS bigint
 or get 'arithmetic overflow error' */
 
 /*
-9) Normalizing database----------------------------------------------------------------------------------------
+8) Normalizing database----------------------------------------------------------------------------------------
 1NF: 
 Done! a) Each attribute (cell) contains a single value (no sets of or nested values; "atomicity"=1)
 Done! b) No repeating groups in attributes (ex. class1/class2/class3 in each student record)
@@ -1261,7 +1234,7 @@ Add [30yr_mortrt] decimal(7,2)
 /* WAIT - WHY? Cancelled query; since I'm essentially writing 136 rates (1 per distinct date) ~7M times,
 I'll find a better way - probably just set a rates by date table during 2NF normalization. */
 
---10) Creating new tables as part of normalization---------------------------------------------------------------
+--9) Creating new tables as part of normalization---------------------------------------------------------------
 
 -- Creating new mortgage rate table and setting its primary key
 CREATE TABLE MortRates 
@@ -1570,7 +1543,7 @@ ALTER TABLE [dbo].[UNION_zip_code_market_tracker]
 PRIMARY KEY ([region],[property_type_id],[period_end_id])
 -- Commands completed successfully
 
-/* 11) Normalization summary ---------------------------------------------------------------------------------------
+/* 10) Normalization summary ---------------------------------------------------------------------------------------
 
 1NF: 
 Done! a) Each attribute (cell) contains a single value (no sets of or nested values; "atomicity"=1)
